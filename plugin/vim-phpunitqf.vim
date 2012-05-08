@@ -56,7 +56,7 @@ endif
 
 " Debug enabled
 if !exists("g:phpunit_debug")
-    let g:phpunit_debug=1
+    let g:phpunit_debug=0
 endif
 
 command! -nargs=1 Test call s:RunPHPUnitTests(<q-args>)
@@ -64,6 +64,8 @@ command! TestOutput call s:OpenPHPUnitOutput()
 
 " Run PHPUnit command and python parser
 function! s:RunPHPUnitTests(arg)
+    " Truncate current log file
+    call system("> ".g:phpunit_tmpfile)
     exe "!".g:phpunit_cmd." ".g:phpunit_args." ".a:arg." ".g:phpunit_args_append." | tee ".g:phpunit_tmpfile
     python parse_test_output()
 endfunction
